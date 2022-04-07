@@ -5,6 +5,7 @@ Git initial set up
 
 git config --global user.name _MyName_
 git config --global user.email _MyEmail_
+
 ------------
 SSH key generation
 ---------------
