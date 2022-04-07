@@ -29,6 +29,7 @@ and the repository exists.
 **Solution**
 
 eval `ssh-agent -s`
+
 ssh-add KeyFile (not KeyFile.pub)
 
 
