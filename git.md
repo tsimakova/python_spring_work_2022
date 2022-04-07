@@ -2,6 +2,7 @@
 ------------
 Git initial set up
 ---------------
+
 git config --global user.name _MyName_
 git config --global user.email _MyEmail_
 ------------
@@ -13,6 +14,22 @@ https://selectel.ru/blog/tutorials/how-to-generate-ssh/
 
 Set up correct rights:
 chmod =600 _MyFile.pub_
+
+------------
+Troubleshooting
+---------------
+
+Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+**Solution**
+
+eval `ssh-agent -s`
+ssh-add KeyFile (not KeyFile.pub)
+
 
 ------------
 Basic git commands
