@@ -5,10 +5,10 @@ A = int(input("Enter integer A "))
 B = int(input("Enter integer B "))
 C = int(input("Enter integer C "))
 
-A = A + B + C  # 12, 4, 5
-B = A - B - C  # 12, 3, 5
-C = A - B - C  # 12, 3, 4
-A = A - B - C  # 5, 3, 4
+A = A + B + C
+B = A - B - C
+C = A - B - C
+A = A - B - C
 
 print("A = " + str(A))
 print("B = " + str(B))

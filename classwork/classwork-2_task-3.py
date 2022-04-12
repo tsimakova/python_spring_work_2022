@@ -9,10 +9,10 @@ temperature = 25
 
 age = age + temperature
 temperature = age - temperature
-age = age - temperature
+age = int(age - temperature)
 
-print(age)
-print(temperature)
+print("age = " + str(age))
+print("temperature = " + str(temperature))
 
 
 
