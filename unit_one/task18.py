@@ -27,14 +27,13 @@ for i in dice_1:
         list_1.append(tuple(combination_1))
         list_2.append(tuple(combination_2))
 values = list_1 + list_2
-print(values)
 keys = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-#print(values)
 new_dict = {}
 
-for v in range(len(values)):
-    new_dict = sorted({sum(values[v]), values[v]})
-    print(new_dict)
+
+#for v in range(len(values)):
+    #new_dict = sorted({sum(values[v]), values[v]})
+    #print(new_dict)
     #for k in keys:
      #   if sum(v) == k:
       #      new_dict.update({k:v})

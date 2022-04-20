@@ -11,6 +11,12 @@ mass = [1,2,17,54,30,89,2,1,6,2]
 
 
 lst = [1, 2, 17, 54, 30, 89, 2, 1, 6, 0]
+
+
+
+
+'''
+lst = [1, 2, 17, 54, 30, 89, 2, 1, 6, 0]
 u_input = int(input("Enter number "))
 difs = []
 
@@ -30,5 +36,6 @@ if first > second:  # sort first and second indexes in numerical order and print
 else:
     print("For number " + str(u_input) + " nearest indexes are: " + str(first) + " and " + str(second))
 
+'''
 
 
