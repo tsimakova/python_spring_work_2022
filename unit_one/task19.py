@@ -17,6 +17,6 @@ fd = open("D:\\python_homework\\algoritm.csv", "w", encoding='utf-8')
 
 new = []
 for i in range(len(id)):
-    fd.write(str(id[i])+ '\t' + str(algoritm[i])+ '\n')
+    fd.write(str(id[i])+ ',' + str(algoritm[i])+ '\n')
 
 fd.close()
