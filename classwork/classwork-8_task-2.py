@@ -16,31 +16,70 @@ E станет Б, и так далее. Метод назван в честь �
 
 '''
 
-fd = open("D:\PYTHON_course\message.txt", 'r', encoding='utf-8')
+#fd = open("D:\PYTHON_course\message.txt", 'r', encoding='utf-8')
 
-alfa = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я']
-#test_alfa = ['а', 'б', 'в']
-text = fd.read()
-#test_text = "аб бв"
-#print(len(alfa))
+#alfa = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я']
+test_alfa = ['а', 'б', 'в']
+#text = fd.read()
+test_text = "аббва"
 
-def shift_left(alphabet, n, secret):
-    for i in secret:
+'''
+The shift_left function takes a list of letters (i.e. alphabet) as input
+and creates the the dictionary with letters (keys) and thier IDs (values) in new alphabet
+where all letters are round-shifted to the n letters to the left direction.   
+
+'''
+
+def shift_left(alphabet, n):
+        key_dict = {}
         for j in alphabet:
-            if i == j:
-                if (alphabet.index(j) - n) == 0:
-                    print(alphabet.index(j), i, (alphabet.index(j) + len(alphabet)))
-                elif (alphabet.index(j) - n) < 0:
-                    print(alphabet.index(j), i, (alphabet.index(j) + len(alphabet) - n))
+                if (alphabet.index(j) - n) >= 0:
+                    key_dict.update({j: (alphabet.index(j) - n)})
+                    #print(alphabet.index(j), j, (alphabet.index(j) - n))
+                if (alphabet.index(j) - n) < 0:
+                    key_dict.update({j: ((alphabet.index(j) - n) + len(alphabet))})
+                    #print(alphabet.index(j), j, ((alphabet.index(j) - n) + len(alphabet)))
                 else:
-                    print(alphabet.index(j), i, (alphabet.index(j) - n))
+                    continue
+        return(key_dict)
 
-shift_left(alfa, 2, text)
+'''
+The code_text function takes alphabet, dictionary
+with letters (keys) and thier IDs (values) in new alphabet generated
+according to some rule, and text
+that should be coded accoring to the provided dictionary.
+
+'''
+
+def code_text(alphabet, key_dict, text):
+    new_alf_id = []
+    for i in text:
+        for key in key_dict:
+            if i == key:
+                new_alf_id.append(key_dict.get(key))
+    coded_text = ''
+    for k in new_alf_id:
+        coded_text += (alphabet[k])
+
+    return(coded_text)
 
 
 
-#print(type(text))
-#print(text)
+code_key_dict = shift_left(test_alfa, 2)
+
+new_text = code_text(test_alfa, code_key_dict, test_text)
+
+print(new_text)
+
+
+
+
+
+
+
+
+
+
 
 
 
