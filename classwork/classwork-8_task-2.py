@@ -16,12 +16,7 @@ E станет Б, и так далее. Метод назван в честь �
 
 '''
 
-#fd = open("D:\PYTHON_course\message.txt", 'r', encoding='utf-8')
 
-#alfa = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я']
-test_alfa = ['а', 'б', 'в']
-#text = fd.read()
-test_text = "аббва"
 
 '''
 The shift_left function takes a list of letters (i.e. alphabet) as input
@@ -35,10 +30,8 @@ def shift_left(alphabet, n):
         for j in alphabet:
                 if (alphabet.index(j) - n) >= 0:
                     key_dict.update({j: (alphabet.index(j) - n)})
-                    #print(alphabet.index(j), j, (alphabet.index(j) - n))
                 if (alphabet.index(j) - n) < 0:
                     key_dict.update({j: ((alphabet.index(j) - n) + len(alphabet))})
-                    #print(alphabet.index(j), j, ((alphabet.index(j) - n) + len(alphabet)))
                 else:
                     continue
         return(key_dict)
@@ -46,30 +39,48 @@ def shift_left(alphabet, n):
 '''
 The code_text function takes alphabet, dictionary
 with letters (keys) and thier IDs (values) in new alphabet generated
-according to some rule, and text
+according to some rule, and the text
 that should be coded accoring to the provided dictionary.
 
 '''
 
 def code_text(alphabet, key_dict, text):
     new_alf_id = []
-    for i in text:
-        for key in key_dict:
-            if i == key:
-                new_alf_id.append(key_dict.get(key))
-    coded_text = ''
-    for k in new_alf_id:
-        coded_text += (alphabet[k])
 
+    for i in range(len(text)):
+        if text[i] in alphabet:
+                new_alf_id.append(key_dict.get(text[i]))
+        else:
+            new_alf_id.append(str(text[i]))
+
+    coded_text = ''
+
+    for k in new_alf_id:
+        if type(k) is int:
+            coded_text += (alphabet[k])
+        else:
+            coded_text += str(k)
     return(coded_text)
 
 
 
-code_key_dict = shift_left(test_alfa, 2)
 
-new_text = code_text(test_alfa, code_key_dict, test_text)
+alfa = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я']
 
-print(new_text)
+fd = open("D:\message.txt", "r", encoding = "utf-8")
+
+text = fd.readlines()
+
+coded_text = ''
+i = 1
+for line in text:
+    new_dict = shift_left(alfa, i)
+    newlines = code_text(alfa, new_dict, line.lower())
+    i = i + 1
+    coded_text += newlines
+
+print(coded_text)
+
 
 
 
