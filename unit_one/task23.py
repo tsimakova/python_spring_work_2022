@@ -70,4 +70,5 @@ for i in range(len(eng_alfa)):
 fd.write(temp_list[-1])
 fd.close
 
-#Answer: although that way may not be obvious at first unless you're dutch.
+#  Answer: although that way may not be obvious at first unless you're dutch.
+#  Encripting method: left-shift for 7 letteres.
