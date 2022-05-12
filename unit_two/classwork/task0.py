@@ -1,14 +1,34 @@
-def my_shiny_new_decorator(function_to_decorate):
-    def the_wrapper_around_the_original_function():
-        print("Я - код, который отработает до вызова функции")
-        function_to_decorate()  # Сама функция
-        print("А я - код, срабатывающий после")
-    return the_wrapper_around_the_original_function
 
-def stand_alone_function():
-    print("Я простая одинокая функция, ты ведь не посмеешь меня изменять?")
+'''
+def decorator_render(func):
+    def wrapper(name):
+        print('Логика перед вызовом')
+        func(name)
+        print('Логика после вызовом')
+    return wrapper
 
-stand_alone_function()
+def render(text):
+    print(f" функция Render {text.upper()}")
 
-stand_alone_function_decorated = my_shiny_new_decorator(stand_alone_function)
-stand_alone_function_decorated()
+wr = decorator_render(render)
+wr('Hi')
+
+'''
+
+
+def decorator_render(func): # функция декоратор
+    print('Call decorator_render')
+    def w(text): # вложенная функция
+        print('Cal wrapper')
+        print('Логика перед вызовом')
+        func(text)
+        print('Логика после вызова')
+    return w
+
+@decorator_render
+def render(text):
+    print(f" функция Render {text.upper()}")
+
+# wr = decorator_render(render)
+# wr('Hi')
+render('Hi')
