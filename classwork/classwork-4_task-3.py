@@ -12,7 +12,6 @@ x = random.randint(0,100)
 print(x)
 
 y = int(input("Enter integer "))
-attempt = []
 count = 1
 
 
@@ -23,7 +22,6 @@ while count < 10:
         break
     if y != x:
         count = count + 1
-        attempt.append(count)
         y = int(input("Incorrect, try again. Enter integer "))
         continue
 else:

@@ -17,7 +17,7 @@ def identity(list):
     return cp_list
 
 copied_list = identity([1, 2, 3, 4, 5])
-#print(copied_list)
+print(copied_list)
 
 '''
 #todo: Реализуйте функцию которая возвращает степень числа каждого элемента

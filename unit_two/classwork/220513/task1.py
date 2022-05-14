@@ -15,15 +15,28 @@
 Задачу следует решить с использованием списковых включений, циклы использовать НЕЛЬЗЯ!
 '''
 
-#mx_file = open('D:\PYTHON_course\matrix.txt', 'r')
-mx_file = open('D:\PYTHON_course\matrix2.txt', 'r')
+## open file for reading
+
+mx_file = open('D:\PYTHON_course\matrix.txt', 'r')
+#mx_file = open('D:\PYTHON_course\matrix2.txt', 'r')
+
+
+# create nested list from table values without line endings
 
 mx_list = []
 mx_list = [str(str(line).split('\n')[0]).split(' ') for line in mx_file]
 
+#  create list of boolean values for lists length checkup
+
 mx_bool = ''
 mx_bool = [(mx_bool + 'True') if len(mx_list[i-1]) == len(mx_list[i]) else (mx_bool + 'False') for i in range(len(mx_list))]
 
+#  checkup if there is a list of different length in the nested list (i.e. 'False' value)
+
 final = 'False' if 'False' in mx_bool else mx_list
 print(final)
+
+# close file
+
+mx_file.close()
 
