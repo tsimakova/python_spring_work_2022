@@ -11,14 +11,19 @@ A = [31, 4, 59, 26, 41, 58, 1, -20, 100, -7] по убыванию.
 #A = [5, 3, 2, 1, 4]
 A = [31, 4, 59, 26, 41, 58, 1, -20, 100, -7]
 
-for i in range(1, len(A)): #  итерируемся в диапазоне длины списка, начиная со второго значения (3)
-        key = A[i] #  сохраняем текущее значение списка в переменную key (3)
-        j = i-1 #  вводим переменную, соответствующую индексу предшествующего значения из списка (0)
-        while j >= 0 and key < A[j]: #  пока j в диапазоне длины списка и текущее значение (начиная со второго) меньше предшествующего (0, 3<5 -> True)
-            A[j+1] = A[j]  # меняем текущее значение на предшествующее (A[1] = A[0], 3->5)
-            j = j - 1  # уменьшаем индекс предществующего значения на единицу (-1)
-            #print(j)
-        A[j+1] = key # меняем предшествующее значение на текущее A[0] = A[1], 5->3
-        #print(A)
+print(A)
 
+'''
+The insertion_sort function sort the values of the list in the ascending order using the insertion algorithm.
+
+'''
+
+def insertion_sort(list):
+    for i in range(len(list)):
+        for j in range(len(list)-1):
+            if list[j] > list[j+1]:
+                list[j], list[j+1] = list[j+1], list[j]
+    return(list)
+
+insertion_sort(A)
 print(A)
