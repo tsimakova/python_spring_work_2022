@@ -2,9 +2,6 @@
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
-#lgn = str(input("Enter login: "))
-#psw = str(input("Enter password: "))
-
 action = input("Выберите действие:\n"
                "1. Войти.\n"
                "2. Зарегистрироваться.\n")
@@ -31,8 +28,6 @@ if int(action) == 1:
             print('№' + str(i[0]) + '. ' + str(i[1]) + '.')
 
 elif int(action) == 2:
-    # = str(input("Введите имя пользователя: "))
-    #psw = str(input("Введите пароль : "))
     con = psycopg2.connect("user=postgres password='123'");
     con.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT);
     cursor = con.cursor();
@@ -62,35 +57,6 @@ elif int(action) == 2:
     print('Поздравляю, вы успешно зарегистрированы!\nВаши учетные данные:')
     print('Имя пользователя: ' + str(creds[1]) + '\n' + 'Пароль: ' + str(creds[2]))
 
-
-
-
 else:
     print('Некорректный ввод. Начните сначала.')
-
-
-'''
-lgn = 'eric_27'
-psw = '123'
-
-con = psycopg2.connect("user=postgres password='123'");
-con.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT);
-cursor = con.cursor();
-name_Database = "TestSystem";
-postgresConnection = psycopg2.connect("dbname=TestSystem user=postgres password='123'")
-cursor = postgresConnection.cursor()
-name_Table = "credential"
-
-cursor.execute("select * from student where id_student = (select id_student from credential where login like %s and password like %s)", [lgn, psw])
-name = cursor.fetchone()
-
-if name is None:
-    print('Проверьте корректность введенных учетных данных.')
-else:
-    print('Добро пожаловать, ' + name[1] + ' ' + name[2] + '!')
-    cursor.execute("select * from test")
-    tests = cursor.fetchall()
-    for i in tests:
-        print('№' + str(i[0]) + '. ' + str(i[1]))
-'''
 
