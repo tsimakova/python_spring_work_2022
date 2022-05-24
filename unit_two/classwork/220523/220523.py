@@ -27,5 +27,5 @@ class Database:
 
 access = Database("TestSystem", "postgres", "123", "eric_27", "123")
 connection = access.getConnection()
-studeniID = access.getStudentID()
-print(studeniID)
+studentID = access.getStudentID()
+print(studentID)
