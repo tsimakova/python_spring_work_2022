@@ -43,26 +43,59 @@ class Auth(DB):
         cursor.execute("select * from profile where login like %s and password like %s", [user_login, user_password])
         user = cursor.fetchall()
         if cursor.rowcount == 1:
-            auth_status = True
+            Auth.auth_status = True
             welcome = "Добро пожаловать, " + str(user[0][2] + " " + str(user[0][4]) + "!")
             return welcome
         else:
             Auth.auth_status = False
             deny = "Пользователь не найден. Проверьте правильность введенных учетных данных."
             return deny
+        cursor.close()
+        connection.close()
 
     def logout(self):
         Auth.auth_status = False
 
 
+class Test(DB):
+    def __init__(self):
+        pass
+
+    def getTests(self):
+        connection = self.getConnection()
+        cursor = connection.cursor()
+        cursor.execute("select * from test")
+        test_list = cursor.fetchall()
+        return test_list
+        cursor.close()
+        connection.close()
+
+
+    def getQuestions(self):
+        selected_test = int(input("Выберите номер теста: "))
+        connection = self.getConnection()
+        cursor = connection.cursor()
+        cursor.execute("select id_question, question_text from question where id_test = %s", [selected_test])
+        questions_list = cursor.fetchall()
+        return questions_list
+        cursor.close()
+        connection.close()
+
 
 access = DB("TestSystem", "postgres", "123")
 connection = access.getConnection()
-#user = Auth.login(access)
+
+user = Auth.login(access)
+
 new_user = Auth.registration(access)
-print(new_user)
 
+tests = Test.getTests(access)
+for t in tests:
+    print(t)
 
+questions = Test.getQuestions(access)
+for q in questions:
+    print(q)
 
 
 
