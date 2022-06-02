@@ -1,3 +1,5 @@
+import sys
+
 import psycopg2
 
 class DB:
@@ -37,7 +39,7 @@ class Auth(DB):
 
     def login(self):
         user_login = str(input("Введите имя пользователя: "))
-        user_password = str(input("Введите пароль : "))
+        user_password = str(input("Введите пароль: "))
         connection = self.getConnection()
         cursor = connection.cursor()
         cursor.execute("select * from profile where login like %s and password like %s", [user_login, user_password])
@@ -48,8 +50,8 @@ class Auth(DB):
             return welcome
         else:
             Auth.auth_status = False
-            deny = "Пользователь не найден. Проверьте правильность введенных учетных данных."
-            return deny
+            print("Пользователь не найден. Проверьте правильность введенных учетных данных.")
+            sys.exit()
         cursor.close()
         connection.close()
 
@@ -65,82 +67,149 @@ class Test(DB):
         connection = self.getConnection()
         cursor = connection.cursor()
         cursor.execute("select * from test")
-        test_list = cursor.fetchall()
-        return test_list
+        tests_list = cursor.fetchall()
+        return tests_list
         cursor.close()
         connection.close()
 
-
     def getQuestions(self):
+        global selected_test
         selected_test = int(input("Выберите номер теста: "))
         connection = self.getConnection()
         cursor = connection.cursor()
         cursor.execute("select id_question, question_text from question where id_test = %s", [selected_test])
         questions_list = cursor.fetchall()
-        return questions_list
+        if len(questions_list) != 0:
+            return questions_list
+        else:
+            print("Ошибка, выбран не существующий тест!")
+            sys.exit()
         cursor.close()
         connection.close()
+
+    def getQuestion(self):
+        global remained_questions
+        global selected_question
+        connection = DB.getConnection(self)
+        selected_question = str(input("Выберите номер вопроса: "))
+        cursor = connection.cursor()
+        cursor.execute("select question_text from question where id_test = %s and id_question = %s", [selected_test, selected_question])
+        question_view = cursor.fetchone()
+        if question_view is not None:
+            cursor.execute("select id_answer, answer_text from answer where id_question = %s", [selected_question])
+            answers_view = cursor.fetchall()
+            print("Вопрос " + selected_question + ": " + question_view[0])
+            print("Варианты ответа:")
+            answers_string = '\n'.join((str(i[0]) + ". " + str(i[1]) + ".") for i in answers_view)
+            cursor.execute("select id_question, question_text from question where id_test = %s and id_question != %s", [selected_test, selected_question])
+            remained_questions = cursor.fetchall()
+            return (answers_string, remained_questions)
+        else:
+            print("Ошибка, выбран не существующий вопрос!")
+            sys.exit()
+        cursor.close()
+        connection.close()
+
+    def setAnswer(self):
+        connection = DB.getConnection(self)
+        selected_answer = str(input("Выберите номер ответа: "))
+        cursor = connection.cursor()
+        cursor.execute("select correctness from answer where id_question = %s and id_answer = %s", [selected_question, selected_answer])
+        answer_view = cursor.fetchone()
+        if answer_view is not None:
+            return answer_view[0]
+        else:
+            print("Ошибка, выбран не существующий ответ!")
+            sys.exit()
+        cursor.close()
+        connection.close()
+
+class View:
+    def render(self):
+        pass
+
+class TestsView(View):
+    def render(self, tests_list):
+        self.tests_list = tests_list
+        tests_view = '\n'.join((str(i[0]) + '. ' + str(i[1]) + ".") for i in tests_list)
+        print("Доступны следующие тесты:")
+        return tests_view
+
+
+class QuestionsView(View):
+    def render(self, questions_list):
+        self.questions_list = questions_list
+        questions_view = '\n'.join((str(i[0]) + '. ' + str(i[1]) + ".") for i in questions_list)
+        return questions_view
+
+class TestSystem(Test):
+    def __init__(self):
+        pass
+    
+    def runTest(self):
+        result = []
+        tests = Test.getTests(self)
+        test_view = TestsView.render(self, tests)
+        print(test_view)
+        questions = Test.getQuestions(self)
+        #print(questions)
+        qnumber = 0
+        try_number = len(questions)
+        while qnumber < try_number:
+            questions_view = QuestionsView.render(self, questions)
+            print(questions_view)
+            question_view = Test.getQuestion(self)
+            print(question_view[0])
+            answer_view = Test.setAnswer(self)
+            if answer_view == True:
+                print("Ответ верный!")
+            else:
+                print("Ответ неверный!")
+            result.append(answer_view)
+            qnumber = qnumber + 1
+            questions = remained_questions
+        else:
+            print("Тест завершен!")
+            return ("Число правильных ответов: " + str(result.count(True)) + " из " + str(try_number))
 
 
 access = DB("TestSystem", "postgres", "123")
 connection = access.getConnection()
 
-user = Auth.login(access)
-
-new_user = Auth.registration(access)
-
-tests = Test.getTests(access)
-for t in tests:
-    print(t)
-
-questions = Test.getQuestions(access)
-for q in questions:
-    print(q)
-
-
-
-
-'''
-class TestSystem:
-    def __init__(self):
-        pass
-
-class Test:
-    def __init__(self, id_test, theme):
-        pass
-    def getListTest:
-        pass
-    def getTest:
-'''
+start = input("Выберите опцию:" + "\n" + "1. Авторизация." + "\n" + "2. Регистрация." + "\n" + "Ваш ответ: ")
+if start.isalpha() == True:
+    print("Некорректный ввод, введите номер опции.")
+else:
+    if int(start) == 1:
+        auth = Auth.login(access)
+        print(auth)
+        test = TestSystem.runTest(access)
+        print(test)
+    elif int(start) == 2:
+        new_user = Auth.registration(access)
+        print(new_user)
+        test = TestSystem.runTest(access)
+        print(test)
+    else:
+        print("Некорректный ввод, введите номер опции.")
 
 
+#user = Auth.login(access)
 
-# 27.05.22
+#new_user = Auth.registration(access)
 
-# class View:
-#     def render(self):
-#         pass
-#
-# class TestsView(View):
-#     def __init__(self, template, data):
-#         self.template =
-#         self.data  = data
-#         pass
-#     def render(self):
-#         # Логика вывода тестов в консоль
-#         cursor.execute("select * from test")
-#         data = cursor.fetchall()
-#         tests_view = template(data)
-#         print(tests_view)
-#
-# class QuestionView(View):
-#     def __init__(self, id_test, theme):
-#         self.id_test = id_test
-#         self.theme = theme
-#     def render(self):
-#         # Логика вывода вопросов в консоль
-#         cursor.execute("select * from question")
-#         data = cursor.fetchall()
-#         question_view = template(data)
-#         print(tests_view)
+#tests = Test.getTests(access)
+#for t in tests:
+#    print(t)
+
+#questions = Test.getQuestions(access)
+#for q in questions:
+#    print(q)
+
+#test = TestSystem.runTest(access)
+#print(test)
+
+
+
+
 
