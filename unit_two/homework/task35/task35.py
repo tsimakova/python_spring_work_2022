@@ -3,6 +3,7 @@ import sys
 import psycopg2
 
 class DB:
+    """Класс содержит атрибуты и методы для подключения к SQL СУБД."""
     def __init__(self, db_name, db_user, db_password):
         self.db_name = db_name
         self.db_user = db_user
@@ -11,6 +12,7 @@ class DB:
         return psycopg2.connect(dbname = self.db_name, user = self.db_user, password =self.db_password)
 
 class Auth(DB):
+    """Класс содержит атрибуты и методы для аутентификации пользователя в системе TestSystem и выхода из нее."""
     auth_status = False
     def __init__(self):
         pass
@@ -33,7 +35,8 @@ class Auth(DB):
         connection.commit()
         cursor.execute("select * from profile where id_profile = %s", [id_new])
         new_user = cursor.fetchall()
-        return new_user[0]
+        for i in new_user:
+            return str("ID пользователя - " + str(i[0]) + "\n" + "Номер группы - " + str(i[1]) + "\n" + "Имя - " + i[2] + "\n" + "Фамилия - " + i[3] + "\n" + "Отчество - " + i[4] + "\n" + "Возраст - " + str(i[5]) + "\n" + "Логин - " + i[6] + "\n" + "Пароль - " + str(i[7]))
         cursor.close()
         connection.close()
 
@@ -60,6 +63,11 @@ class Auth(DB):
 
 
 class Test(DB):
+    """Класс содержит атрибуты и методы для выполнения запросов в БД TestSystem. В классе реализован следующий функционал:
+    - Получение списка всех доступных тестов;
+    - Получение списка вопросов для заданного теста;
+    - Получение заданного вопроса и списка ответов к нему;
+    - Выбор ответа."""
     def __init__(self):
         pass
 
@@ -125,6 +133,7 @@ class Test(DB):
         connection.close()
 
 class View:
+    """Класс содержит атрибуты и методы для формирования представления списка тестов и списква вопросов. """
     def render(self):
         pass
 
@@ -135,7 +144,6 @@ class TestsView(View):
         print("Доступны следующие тесты:")
         return tests_view
 
-
 class QuestionsView(View):
     def render(self, questions_list):
         self.questions_list = questions_list
@@ -143,6 +151,7 @@ class QuestionsView(View):
         return questions_view
 
 class TestSystem(Test):
+    """Класс содержит атрибуты и методы для реализиции бизнес-логики TestSystem: выбор и прохождение тестов, учет ответов, оценка результатов теста. """
     def __init__(self):
         pass
     
@@ -172,10 +181,10 @@ class TestSystem(Test):
             print("Тест завершен!")
             return ("Число правильных ответов: " + str(result.count(True)) + " из " + str(try_number))
 
+# Код программы.
 
 access = DB("TestSystem", "postgres", "123")
 connection = access.getConnection()
-
 start = input("Выберите опцию:" + "\n" + "1. Авторизация." + "\n" + "2. Регистрация." + "\n" + "Ваш ответ: ")
 if start.isalpha() == True:
     print("Некорректный ввод, введите номер опции.")
@@ -193,21 +202,6 @@ else:
     else:
         print("Некорректный ввод, введите номер опции.")
 
-
-#user = Auth.login(access)
-
-#new_user = Auth.registration(access)
-
-#tests = Test.getTests(access)
-#for t in tests:
-#    print(t)
-
-#questions = Test.getQuestions(access)
-#for q in questions:
-#    print(q)
-
-#test = TestSystem.runTest(access)
-#print(test)
 
 
 
