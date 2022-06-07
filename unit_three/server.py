@@ -1,5 +1,5 @@
-
 import socket
+import base64
 
 # Создаем сокет.
 
@@ -43,10 +43,11 @@ while True:
     data = conn.recv(1024)
     if not data:
         break
-    conn.send(data.upper())
+    with open('/unit_three/unnamed.jpg', "rb") as image2string:
+        converted_string = base64.b64encode(image2string.read())
+    #print(converted_string)
+    conn.send(converted_string)
 
 # Теперь можно и закрыть соединение.
-conn.close()
 
-#file = open("D:\PYTHON_course\\test.jpeg", "rb")
-#print(file.read())
+conn.close()

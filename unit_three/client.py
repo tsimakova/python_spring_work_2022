@@ -1,4 +1,5 @@
 import socket
+import base64
 
 # Нужно создать сокет, подключиться к серверу послать ему данные, принять данные и закрыть соединение.
 # Метод connect, с помощью которого мы подключаемся к серверу.
@@ -6,9 +7,12 @@ import socket
 
 sock = socket.socket()
 sock.connect(('localhost', 9090))
-sock.send('hello, world!')
+sock.send(b'Hi')
 
 data = sock.recv(1024)
-sock.close()
 
-print(data)
+decodeit = open('/encode.jpg', 'wb')
+decodeit.write(base64.b64decode((data)))
+decodeit.close()
+
+sock.close()
