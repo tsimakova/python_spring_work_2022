@@ -10,7 +10,7 @@ import http.client
 conn = http.client.HTTPSConnection("www.cbr.ru")
 conn.request("GET", "/")
 r1 = conn.getresponse()
-#print(r1.status, r1.reason)
+print(r1.status, r1.reason)
 
 # Прочитаем страницу целиком
 #data1 = r1.read()
